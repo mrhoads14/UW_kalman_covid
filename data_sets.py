@@ -124,7 +124,7 @@ def get_fips(state_2l, name):
     Given a two letter designator and the name of a county, returns the
     appropriate 5 digit FIPS code (in the form of a string).
     """
-    data = pd.read_csv(r'census_bureau/2019_Gaz_counties_national.txt',
+    data = pd.read_csv(r'data/reference_census/2019_Gaz_counties_national.txt',
                        sep='\t', encoding='latin_1', dtype={'GEOID': 'str'})
     data.rename(columns={data.columns[-1]: 'INTPTLONG'}, inplace=True)
 
