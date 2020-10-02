@@ -76,7 +76,7 @@ def create_case_df_state():
 
 
 def create_symptom_df():
-    data = pd.read_csv(r'data/fb/fb_smell.csv',
+    data = pd.read_csv(r'data/fb_smell.csv',
                        dtype={'fips': 'str',
                               'n': 'int64',
                               'smell_taste_loss': 'float64'})

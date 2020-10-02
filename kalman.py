@@ -277,10 +277,10 @@ def get_predict_measures():
 def get_data_sets(state, fips=None):
     # the post hoc seiir model predictions provided by Prof Flaxman without
     # any kalman filtering:
-    seiir = pd.read_csv(r'case_vs_symptom/kalman/ny_proj.csv', header=0,
+    seiir = pd.read_csv(r'data/seiir_compartments_post-hoc_ny_state.csv', header=0,
                         index_col='date', parse_dates=True)
     # beta time series provided by Prof Flaxman:
-    beta = pd.read_csv('vivarium_uw_covid/beta_t_ny.csv', header=0,
+    beta = pd.read_csv(r'data/beta_t_ny.csv', header=0,
                        index_col='date', parse_dates=True, squeeze=True)
 
     fb_data = data_sets.create_symptom_df()
