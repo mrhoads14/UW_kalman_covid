@@ -33,9 +33,16 @@ def main():
     P_mult = 1
     Q_mult = 1
     Rn_mult = 5*10**-4
+    Rn_22 = 1
+    Rn_33 = 100
     Q = Q_mult * np.eye(5)
     P = P_mult * np.eye(5)
-    Rn = Rn_mult * np.eye(5)
+    Rn = Rn_mult * np.array([[1, 0, 0, 0, 0],
+                             [0, 1, 0, 0, 0],
+                             [0, 0, Rn_22, 0, 0],
+                             [0, 0, 0, Rn_33, 0],
+                             [0, 0, 0, 0, 1]])
+
     the_title = 'P_init = ' + str(P_mult) + '*Iden, Q = ' + str(Q_mult) + '*Iden, Rn = ' + str(Rn_mult) + '*Iden'
 
     # generate data
