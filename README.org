@@ -1,1 +1,4 @@
-README shell
+* Research repository to improve County-level predictions of Covid-19 cases
+
+  - The primary Kalman filtering is done in ~kalman.py~.
+  - The data sets are created in the ~data_sets.py~ script.
