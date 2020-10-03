@@ -32,16 +32,22 @@ def main():
         }
     P_mult = 1
     Q_mult = 1
+
     Rn_mult = 5*10**-4
-    Rn_22 = 1
-    Rn_33 = 100
-    Q = Q_mult * np.eye(5)
-    P = P_mult * np.eye(5)
+    Rn_22 = 100
+    Rn_23 = 0
+    Rn_32 = 100
+    
     Rn = Rn_mult * np.array([[1, 0, 0, 0, 0],
                              [0, 1, 0, 0, 0],
-                             [0, 0, Rn_22, 0, 0],
-                             [0, 0, 0, Rn_33, 0],
+                             [0, 0, Rn_22, Rn_23, 0],
+                             [0, 0, Rn_32, 1, 0],
                              [0, 0, 0, 0, 1]])
+    Q = Q_mult * np.eye(5)
+    P = P_mult * np.eye(5)
+    purple = '#33016F'
+    gold = '#E8D3A2'
+    gray = '#797979'
 
     the_title = 'P_init = ' + str(P_mult) + '*Iden, Q = ' + str(Q_mult) + '*Iden, Rn = ' + str(Rn_mult) + '*Iden'
 
@@ -49,11 +55,8 @@ def main():
     seiir, beta, fb_data, case_data = get_data_sets(data_sets.STATES[the_state],
                                                     fips=the_county)
 
-    if the_county is None:
-        b = None
-    else:
-        county_pop, state_pop = data_sets.get_pops(the_county)
-        b = county_pop / state_pop
+    county_pop, state_pop = data_sets.get_pops(the_county)
+    b = county_pop / state_pop
 
 
     # calculate moving averages on the fb and case data
@@ -68,11 +71,11 @@ def main():
     # I2_county = b * I2
     # prop_county = rho1 * I2_county
     # case_county = rho2 * I2_county
-    if b is not None:
-        x_hat_k0 = b * x_hat_state_k0
-        I2_county = x_hat_k0[3, 0]
-        rho1 = prop_ma7[0] / I2_county
-        rho2 = case_ma7_all.loc['2020-04-12'] / I2_county
+
+    x_hat_k0 = b * x_hat_state_k0
+    I2_county = x_hat_k0[3, 0]
+    rho1 = 1000 * prop_ma7[0] / I2_county
+    rho2 = case_ma7_all.loc['2020-04-12'] / I2_county
 
     # create empty dictionaries to hold the estimated values
     prop_est = {}
@@ -113,7 +116,7 @@ def main():
         # store estimated values for proportion and case rate
         prop_est[K0 + datetime.timedelta(days=k+7)] = rho1 * x_hat_post[3, 0]
         case_est[K0 + datetime.timedelta(days=k+7)] = rho2 * x_hat_post[3, 0]
-        seiir_pred[K0 + datetime.timedelta(days=k+7)] = rho2 * x_hat_k1[3, 0]
+        seiir_pred[K0 + datetime.timedelta(days=k+7)] = b * x_hat_k1[3, 0]
 
         # update the P and k
         P = P_post
@@ -126,12 +129,19 @@ def main():
 
     # plot findings
     fig, ax = plt.subplots(1)
-    plt.plot(predicted_case.index, predicted_case, label='case rate predicted 7 days prior')
-    plt.plot(case_ma7.index, case_ma7, label='case rate measured moving avg')
-    plt.plot(predicted_seiir_prior.index, predicted_seiir_prior, label='IHME rho2*I2 predicted 7 days prior')
-    plt.legend()
+    plt.plot(predicted_case.index, predicted_case, label='Our 7-Day Forecast',
+             c=purple)
+    plt.plot(case_ma7.index, case_ma7, label='Case Positive Rate', c=gold)
+    plt.plot(predicted_seiir_prior.index, predicted_seiir_prior, label='IHME 7-day Forecast', c=gray)
+    #plt.plot(prop_ma7.index, prop_ma7, label='Albany measured symp prop divided by rho1')
+    plt.legend(loc='upper left')
     plt.grid()
-    plt.title('Albany County MA case rate vs. 7 day prediction using Kalman filter estimate')
+    ax2 = ax.twinx()
+    ax2.plot(case_ma7.index, prop_ma7, c='red', label='Facebook Symptom Rate')
+    
+    #ax.grid()
+    plt.legend(loc='upper right')
+    ax.set_title('Albany County measured case rate & symptom prop vs. 7 day prediction using Kalman filter estimate')
     fig.suptitle('R = ' + str(Rn_mult) + ' * Identity Matrix')
     plt.show()
 
@@ -305,6 +315,9 @@ def get_data_sets(state, fips=None):
 
 
 def calc_ma7(fb_data, case_data):
+    """
+    Returns two Pandas series
+    """
     # the fb_data is a DataFrame while the case_data is a Series
     fb_ma7 = fb_data.rolling(window=7).mean()
     fb_ma7 = fb_ma7.iloc[6:, :]
