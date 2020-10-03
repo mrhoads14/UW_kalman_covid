@@ -137,18 +137,21 @@ def get_fips(state_2l, name):
     return fips
 
 
-def get_pop_county(fips):
-    if fips == '36001':
-        return 305506
-    else:
-        return None
+def get_pops(fips):
+    pop_data = pd.read_csv(r'data/reference_census/co-est2019-alldata.csv',
+                           dtype={'STATE': 'str', 'COUNTY': 'str',
+                                  'POPESTIMATE2019': 'int64'},
+                           usecols=[3, 4, 18])
+    state_f = fips[0:2]
+    county_f = fips[2:6]
+    c_row = pop_data[(pop_data['STATE'] == state_f) &
+                     (pop_data['COUNTY'] == county_f)]
+    county_pop = c_row['POPESTIMATE2019'].iloc[0]
+    s_row = pop_data[(pop_data['STATE'] == state_f) &
+                     (pop_data['COUNTY'] == '000')]
+    state_pop = s_row['POPESTIMATE2019'].iloc[0]
 
-
-def get_pop_state(state):
-    if state == 'New York':
-        return 19453561
-    else:
-        return None
+    return county_pop, state_pop
 
 
 STATES = {

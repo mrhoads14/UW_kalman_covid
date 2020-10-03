@@ -52,8 +52,7 @@ def main():
     if the_county is None:
         b = None
     else:
-        county_pop = data_sets.get_pop_county(the_county)
-        state_pop = data_sets.get_pop_state(data_sets.STATES[the_state])
+        county_pop, state_pop = data_sets.get_pops(the_county)
         b = county_pop / state_pop
 
 
