@@ -3,6 +3,7 @@ import datetime
 
 import numpy as np
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 
 import data_sets
@@ -45,7 +46,7 @@ def main():
     Q = Q_mult * np.eye(5)
     P = P_mult * np.eye(5)
     purple = '#33016F'
-    gold = '#E8D3A2'
+    gold = '#9E7A27'
     gray = '#797979'
 
     # generate data
@@ -138,6 +139,7 @@ def main():
 
 
     # plot findings
+    matplotlib.rcParams.update({'font.size': 20})
     plt.style.use('seaborn-whitegrid')
     tick_start = case_ma7.index[0]
     tick_end = predicted_seiir_prior.index[-1]
@@ -147,47 +149,51 @@ def main():
 
     fig1, ax11 = plt.subplots(1)
     plt.sca(ax11)
-
-    plt.plot(case_ma7.index, case_ma7, label='Case Positive Rate', c=gold)
+    width = 4
+    plt.plot(case_ma7.index, case_ma7, label='Case Positive Rate', c=gold,
+             linewidth=width)
     plt.plot(predicted_seiir_prior.index, predicted_seiir_prior,
-             label='IHME 7-day Forecast', c=gray)
-
+             label='IHME 7-day Forecast', c=gray, linewidth=width)
+    plt.ylim(-2, 72)
     plt.xticks(week_interval, rotation=30, ha='right', rotation_mode='anchor')
     plt.ylabel('Number of Cases per Day')
-    plt.xlabel('Date')
+    # plt.xlabel('Date')
     plt.legend(loc='upper left')
 
     fig2, ax21 = plt.subplots(1)
     plt.sca(ax21)
-    plt.plot(case_ma7.index, case_ma7, label='Case Positive Rate', c=gold)
+    plt.plot(case_ma7.index, case_ma7, label='Case Positive Rate', c=gold,
+             linewidth=width)
     plt.plot(predicted_seiir_prior.index, predicted_seiir_prior,
-             label='IHME 7-day Forecast', c=gray)
+             label='IHME 7-day Forecast', c=gray, linewidth=width)
     plt.plot(predicted_case.index, predicted_case, label='Our 7-Day Forecast',
-             c=purple)
-
+             c=purple, linewidth=width)
+    plt.ylim(-2, 72)
     plt.xticks(week_interval, rotation=30, ha='right', rotation_mode='anchor')
-    plt.xlabel('Date')
+    # plt.xlabel('Date')
     plt.ylabel('Number of Cases per Day')
     plt.legend(loc='upper left')
 
     fig3, ax31 = plt.subplots(1)
     plt.sca(ax31)
-    plt.plot(case_ma7.index, case_ma7, label='Case Positive Rate', c=gold)
+    plt.plot(case_ma7.index, case_ma7, label='Case Positive Rate', c=gold,
+             linewidth=width)
     plt.plot(predicted_seiir_prior.index, predicted_seiir_prior,
-             label='IHME 7-day Forecast', c=gray)
+             label='IHME 7-day Forecast', c=gray, linewidth=width)
     plt.plot(predicted_case.index, predicted_case, label='Our 7-Day Forecast',
-             c=purple)
-
+             c=purple, linewidth=width)
+    plt.ylim(-2, 72)
     plt.xticks(week_interval, rotation=30, ha='right', rotation_mode='anchor')
-    plt.xlabel('Date')
+    # plt.xlabel('Date')
     plt.ylabel('Number of Cases per Day')
     plt.legend(loc='upper left')
 
     ax32 = ax31.twinx()
     plt.sca(ax32)
-    plt.plot(case_ma7.index, 100*prop_ma7, c='red', label='Facebook Symptom Rate')
-
-    plt.grid()
+    plt.plot(case_ma7.index, 100*prop_ma7, c='red', label='Facebook Symptom Rate',
+             linewidth=width)
+    plt.ylim(-.065, 2.5)
+    plt.grid(axis='y', linestyle=':')
     plt.xticks(week_interval, rotation=30, ha='right', rotation_mode='anchor')
 
     plt.ylabel('Percentage of Positive Symptom Response')
