@@ -75,11 +75,15 @@ def create_case_df_state():
     return data
 
 
-def create_symptom_df():
-    data = pd.read_csv(r'data/fb_smell.csv',
-                       dtype={'fips': 'str',
-                              'n': 'int64',
-                              'smell_taste_loss': 'float64'})
+def create_symptom_df(valid=False):
+    if valid:
+        filename = r'data/fb_smell_valid.csv'
+    else:
+        filename = r'data/fb_smell.csv'
+    
+    data = pd.read_csv(filename, dtype={'fips': 'str',
+                                        'n': 'int64',
+                                        'smell_taste_loss': 'float64'})
     data.drop(data.columns[0], axis=1, inplace=True)
     data['fips'] = data['fips'].str.replace('(^[0-9]{4}\.0)', '0\g<1>')
     data['fips'] = data['fips'].str.extract('(^[0-9]{5})')
