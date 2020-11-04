@@ -79,7 +79,7 @@ def create_symptom_df(valid=False):
     if valid:
         filename = r'data/fb_smell_valid.csv'
     else:
-        filename = r'data/fb_smell.csv'
+        filename = r'data/fb_smell_20201019.csv'
     
     data = pd.read_csv(filename, dtype={'fips': 'str',
                                         'n': 'int64',
