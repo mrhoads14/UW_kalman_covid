@@ -32,15 +32,17 @@ def create_case_df_county():
     data['cases'].fillna(value=0, inplace=True)
     data['deaths'].fillna(value=0, inplace=True)
 
-    # creates the case rate column
+    # creates the case rate and death rate columns
     data['case_rate'] = data['cases'].groupby(level=0).diff()
+    
     # sets initial case_rate values to the number of cases
     nan_vals = data['case_rate'].isnull()
     data.loc[nan_vals, 'case_rate'] = data.loc[nan_vals, 'cases']
+
     data[['cases', 'deaths', 'case_rate']] = data[['cases',
                                                    'deaths',
-                                                   'case_rate']].astype(
-                                                       'int64')
+                                                   'case_rate',
+                                                   ]].astype('int64')
     return data
 
 
