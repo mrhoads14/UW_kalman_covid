@@ -51,7 +51,7 @@ def main():
     Rn_32 = 1
 
     Rn_23 = 1
-    Rn_33 = 50
+    Rn_33 = 1
 
     Rn = Rn_mult * np.array([[0, 0, 0, 0, 0],
                              [0, 0, 0, 0, 0],
@@ -74,8 +74,9 @@ def main():
     b = county_pop / state_pop
 
     # calculate moving averages on the fb and case data
-    prop_ma7, case_ma7_all = calc_ma7(fb_data, case_data)
-    
+    prop_ma7 = calc_fb_ma7(fb_data)
+    case_ma7 = case_data.rolling(window=7).mean()
+    case_ma7_all = case_ma7.iloc[6:]
 
 
 
@@ -93,7 +94,7 @@ def main():
 
     x_hat_k0 = b * x_hat_state_k0
     I2_county = x_hat_k0[3, 0]
-    rho1 = 1000 * prop_ma7.loc['2020-04-12'] / I2_county
+    rho1 = prop_ma7.loc['2020-04-12'] / I2_county
     rho2 = case_ma7_all.loc['2020-04-12'] / I2_county
 
     # create empty dictionaries to hold the estimated values
@@ -103,7 +104,7 @@ def main():
 
     # each iteration of the while loop is a step for the Kalman filter
     d = K0
-    while d <= case_ma7.index[-1]:
+    while d <= prop_ma7.index[-1]:
         # each cycle of the while loop executes a step
 
         # get state level compartments
@@ -120,7 +121,7 @@ def main():
         z_k = np.array([[0],
                         [0],
                         [prop_ma7.loc[d]],
-                        [case_ma7.loc[d]],
+                        [case_ma7_all.loc[d]],
                         [0]])
 
         # predict step
@@ -156,14 +157,14 @@ def main():
     # error between the measured case rate (smoothed) and the
     # SEIIR model scaled to the county (without any Kalman adjustment)
     seiir_sq_err = 0
-    
+
     # error between the measured case rate (smoothed) and the predicted
     # output of the Kalman filter
     kalman_sq_err = 0
 
     for day in overlap_dt:
-        seiir_sq_err += (case_ma7[day] - predicted_seiir_prior[day])**2
-        kalman_sq_err += (predicted_case[day] - case_ma7[day])**2
+        seiir_sq_err += (case_ma7_all[day] - predicted_seiir_prior[day])**2
+        kalman_sq_err += (predicted_case[day] - case_ma7_all[day])**2
 
     print('SSE between seiir forecast and case rate:', seiir_sq_err)
     print('SSE between kalman forecast and case rate:', kalman_sq_err)
@@ -172,7 +173,7 @@ def main():
     # plot findings
     matplotlib.rcParams.update({'font.size': 20})
     plt.style.use('seaborn-whitegrid')
-    tick_start = case_ma7.index[0]
+    tick_start = K0
     tick_end = predicted_seiir_prior.index[-1]
 
     week_interval = pd.date_range(start=tick_start, end=tick_end, freq='W')
@@ -415,18 +416,18 @@ def get_data_sets(state, fips=None):
     return seiir, fb_data_geo, fb_data_val_geo, case_data_geo
 
 
-def calc_ma7(fb_data, case_data):
+def calc_fb_ma7(fb_data):
     """
-    Returns two Pandas series
+    Returns a Pandas series
     """
     # the fb_data is a DataFrame while the case_data is a Series
     fb_ma7 = fb_data.rolling(window=7).mean()
     fb_ma7 = fb_ma7.iloc[6:, :]
     prop_ma7 = fb_ma7['num_stl'].div(fb_ma7['n'])
 
-    case_ma7 = case_data.rolling(window=7).mean()
-    case_ma7 = case_ma7.iloc[6:]
-    return prop_ma7, case_ma7
+    return prop_ma7
+
+
 
 
 main()
