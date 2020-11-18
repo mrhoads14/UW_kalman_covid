@@ -1,1 +1,5 @@
 Readme file to describe the data.
+
+* ~us-counties.csv~: Data from the New York Times -- Confirmed case and death numbers by county
+* ~fb_smell.csv~: Data via Symptom Challenge, Facebook, CMU and UMD -- Counts of survey respondents reporting loss of taste and/or smell
+* ~seiir_compartments_post-hoc_ny_state.csv~: Data from IHME -- Compartment values for their SEIIR model
