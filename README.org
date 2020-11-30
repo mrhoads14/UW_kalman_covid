@@ -3,10 +3,11 @@ This is the code repository for the University of Washington team comprised of:
  - Les Atlas
  - Abraham Flaxman
  - Michael Rhoads
+ - Darcy Atlas
 
-For our submission to the Covid-19 Symptom Challenge. We utilize Kalman filtering to generate a 7-day forecast of case counts by county for the state of New York. The Kalman filter uses the IHME SEIIR model (forecasts at the state level) along with measurements of case counts (via NY Times data) at the county level and measurements of positive reporting of loss of smell/taste via Facebook/CMU/UMD data from the Symptom Challenge, to generate a 7-day estimate.
+For our submission to the Covid-19 Symptom Challenge. We utilize Kalman filtering to generate a 7-day forecast of case counts by county for counties in New York and Florida. The Kalman filter uses the IHME SEIIR model (forecasts at the state level) along with measurements of confirmed case counts (via NY Times data) at the county level and different measurements of possible Covid-19 reporting via the CMU/Facebook survey data from the Symptom Challenge, to generate a 7-day forecast of Covid-19 case counts.
 
-The primary code is located in the ~execution-for-submission.ipynb~ Jupyter Notebook. The data sets are created in the ~data_sets.py~ script.
+An overview of the approach is found in the ~UW COVID-19 Update Equations 11-29-20.pdf~ document. The code for our initial submission to Phase I of the competition is located in the ~execution-for-submission.ipynb~ Jupyter Notebook. The code for our final submission to Phase II of the competition is located in the ~execution-functions-stepP.ipynb~ Jupyter Notebook. The data sets are created in the ~data_sets.py~ script.
 
 See the Challenge's website at:
    - https://www.symptomchallenge.org/
