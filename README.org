@@ -9,6 +9,8 @@ For our submission to the Covid-19 Symptom Challenge. We utilize Kalman filterin
 
 An overview of the approach is found in the ~UW COVID-19 Update Equations 11-29-20.pdf~ document. The code for our initial submission to Phase I of the competition is located in the ~execution-for-submission.ipynb~ Jupyter Notebook. The code for our final submission to Phase II of the competition is located in the ~execution-functions-stepP.ipynb~ Jupyter Notebook. The data sets are created in the ~data_sets.py~ script.
 
+The error metrics for our Phase II final submission for the counties in NY and FL can be found in the respective ~output/err_ny_20201023_v2.csv~ and ~ouput/err_fl_20201023_v2.csv~.
+
 See the Challenge's website at:
    - https://www.symptomchallenge.org/
 
