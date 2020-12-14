@@ -3,8 +3,8 @@ import pandas as pd
 
 def create_case_df_county():
     data = pd.read_csv(r'data/us-counties.csv', dtype={'fips': 'str',
-                                                       'cases': 'int64',
-                                                       'deaths': 'int64'})
+                                                       'cases': 'int64'})
+
     data['date'] = pd.to_datetime(data['date'], yearfirst=True)
     date_rng = pd.date_range(data['date'].min(), data['date'].max())
 
@@ -31,6 +31,7 @@ def create_case_df_county():
     data['state'].fillna(method='bfill', inplace=True)
     data['cases'].fillna(value=0, inplace=True)
     data['deaths'].fillna(value=0, inplace=True)
+    data['deaths'] = data['deaths'].astype('int64')
 
     # creates the case rate and death rate columns
     data['case_rate'] = data['cases'].groupby(level=0).diff()
@@ -81,7 +82,7 @@ def create_symptom_df(valid=False):
     if valid:
         filename = r'data/fb_smell_valid.csv'
     else:
-        filename = r'data/fb_smell.csv'
+        filename = r'data/fb_smell_taste_loss.csv'
     
     data = pd.read_csv(filename, dtype={'fips': 'str',
                                         'n': 'int64',
