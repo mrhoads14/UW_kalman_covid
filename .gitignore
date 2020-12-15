@@ -1,5 +1,9 @@
 myREADME.org
 
+# zip files
+*.gz
+*.zip
+
 # PowerPoint
 *.pptx
 
