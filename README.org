@@ -20,5 +20,8 @@ Note: we are no longer updating predictions with a non-zero delay.
 The survey data is from CMU/Facebook and the confirmed case count data is from the New York Times.
 
 See the Challenge's website at:
-   - https://www.symptomchallenge.org/
+- https://www.symptomchallenge.org/
+
+You can find the NYTimes data at their GitHub:
+- https://github.com/nytimes/covid-19-data
 
