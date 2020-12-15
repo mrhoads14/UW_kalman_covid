@@ -7,9 +7,17 @@ This is the code repository for the University of Washington team comprised of:
 
 For our submission to the Covid-19 Symptom Challenge. We utilize Kalman filtering to generate a 7-day forecast of case counts by county for counties in New York and Florida. The Kalman filter uses the IHME SEIIR model (forecasts at the state level) along with measurements of confirmed case counts (via NY Times data) at the county level and different measurements of possible Covid-19 reporting via the CMU/Facebook survey data from the Symptom Challenge, to generate a 7-day forecast of Covid-19 case counts.
 
-An overview of the approach is found in the ~UW COVID-19 Update Equations 11-29-20.pdf~ document. The code for our initial submission to Phase I of the competition is located in the ~execution-for-submission.ipynb~ Jupyter Notebook. The code for our final submission to Phase II of the competition is located in the ~execution-functions-stepP.ipynb~ Jupyter Notebook. The data sets are created in the ~data_sets.py~ script.
+An overview of the approach is found in the ~UW COVID-19 Update Equations 11-29-20.pdf~ document. The code for our initial submission to Phase I of the competition is located in the ~execution-for-submission.ipynb~ Jupyter Notebook. The code for our final submission to Phase II of the competition is located in the ~execution-functions-stepP.ipynb~ Jupyter Notebook. Functions to support data set creation are in the ~data_sets.py~ script.
 
-The error metrics for our Phase II final submission for the counties in NY and FL can be found in the respective ~output/err_ny_20201023_v2.csv~ and ~ouput/err_fl_20201023_v2.csv~.
+The latest error metrics for the counties in NY and FL can be found in the respective ~output/err_ny_20201208.csv~ and ~ouput/err_fl_20201208.csv~.
+
+All of our predictions use the IHME model for the spread of Covid-19 at the state level. We then integrate various measurement data using a Kalman filter to generate predictions. We are currently doing three variants of predictions using different mixes of measurement data. Our predictions are labeled as follows:
+- ~..._case_only.csv~  Indicates predictions using only confirmed case counts.
+- ~..._hh_0delay.csv~  Indicates predictions using confirmed case counts and survey data on presence of household Covid-like infection.
+- ~..._smell_0delay.csv~  Indicates predictions using confirmed case counts and survey data on the loss of smell and/or taste.
+
+Note: we are no longer updating predictions with a non-zero delay.
+The survey data is from CMU/Facebook and the confirmed case count data is from the New York Times.
 
 See the Challenge's website at:
    - https://www.symptomchallenge.org/
