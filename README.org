@@ -12,9 +12,9 @@ An overview of the approach is found in the ~UW COVID-19 Update Equations 11-29-
 The latest error metrics for the counties in NY and FL can be found in the respective ~output/err_ny_20201208.csv~ and ~ouput/err_fl_20201208.csv~.
 
 All of our predictions use the IHME model for the spread of Covid-19 at the state level. We then integrate various measurement data using a Kalman filter to generate predictions. We are currently doing three variants of predictions using different mixes of measurement data. Our predictions are labeled as follows:
-- ~..._case_only.csv~  Indicates predictions using only confirmed case counts.
-- ~..._hh_0delay.csv~  Indicates predictions using confirmed case counts and survey data on presence of household Covid-like infection.
-- ~..._smell_0delay.csv~  Indicates predictions using confirmed case counts and survey data on the loss of smell and/or taste.
+- ~output/pred_..._case_only.csv~  Indicates predictions using only confirmed case counts.
+- ~output/pred_..._hh_0delay.csv~  Indicates predictions using confirmed case counts and survey data on presence of household Covid-like infection.
+- ~output/pred_..._smell_0delay.csv~  Indicates predictions using confirmed case counts and survey data on the loss of smell and/or taste.
 
 Note: we are no longer updating predictions with a non-zero delay.
 The survey data is from CMU/Facebook and the confirmed case count data is from the New York Times.
